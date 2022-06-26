@@ -60,14 +60,21 @@ typedef struct lexems {
 
 //  parcer
 
-int parcer(char* str, lexems_t* stack);
+int parcer(char* str, lexems_t** stack);
 void push(lexems_t** head, double value, int type, int priority);
+void transpose_struct(lexems_t** dev,lexems_t* sourse);
 lexems_t* pop(lexems_t** head);
 int peek(const lexems_t* head);
 int check_sign(char sign);
-void printStack(const lexems_t* head);
+void print_stack(const lexems_t* head);
+void clear_stack(lexems_t* head);
 char* check_number(char* str, int* i, int* error);
 int is_num(char* str);
 int check_func(char* str, int* i);
 void change_position_func(int check, int* i);
+int get_size_struct(lexems_t* dev);
+void init_struct(lexems_t** sourse);
+lexems_t * delete_struct(lexems_t *val, lexems_t *sourse);
+// OPN
+int OPN(lexems_t* sourse, lexems_t** result);
 #endif  //  SRC_S21_SMART_CALC_H_
