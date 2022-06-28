@@ -1,22 +1,20 @@
 #include "s21_smart_calc.h"
 
 int main() {
-    char* str = "123+14";
+    char* str = "(2*3)+(2*3*2/4/6/6*2)";
     lexems_t* stack_p = NULL;
     lexems_t* buf_p = NULL;
-    // init_struct(&stack_p);
-    // init_struct(&buf_p);
     printf("error: %d\n", parcer(str, &stack_p));
     print_stack(stack_p);
-    //transpose_struct(&buf_p, stack_p);
-    //OPN(stack_p, &stack_p);
+    transpose_struct(&buf_p, stack_p);
+    OPN(buf_p, &stack_p);
     return 0;
 }
 
 // x = 0
 // -+ = 1
 // * / mod = 2
-// ^ = 2
+// ^ = 3
 // sin cos = 4
 // num = 5
 // () = 6
@@ -57,7 +55,24 @@ int parcer(char* str, lexems_t** stack) {
             i++;
         }
         if (check_sign(str[i])) {
-            push(stack, 0, check_sign(str[i]), 1);
+            int res = check_sign(str[i]);
+            switch (res) {
+                case 10:
+                    push(stack, 0, res, 1);
+                    break;
+                case 11:
+                    push(stack, 0, res, 1);
+                    break;
+                case 12:
+                    push(stack, 0, res, 2);
+                    break;
+                case 13:
+                    push(stack, 0, res, 2);
+                    break;
+                default:
+                    push(stack, 0, res, 3);
+                    break;
+            }
         }
         if (str[i] == '(') push(stack, 0, 15, 6);
         if (str[i] == ')') push(stack, 0, 16, 6);
@@ -73,8 +88,7 @@ int parcer(char* str, lexems_t** stack) {
             i = i + 2;
         }
         if (is_num(str + i)) {
-            char* buf = NULL;
-            check_number(str, &i, &error);
+            char* buf = check_number(str, &i, &error);
             if (error) break;
             push(stack, atof(buf), 18, 5);
             free(buf);
@@ -89,7 +103,7 @@ int parcer(char* str, lexems_t** stack) {
         }
         if (str[i] == 'x') push(stack, 0, 17, 0);
     }
-    if (error) clear_stack(*stack);
+    if (error) clear_stack(stack);
     return error;
 }
 
@@ -108,7 +122,7 @@ void push(lexems_t** head, double value, int type, int priority) {
 lexems_t* pop(lexems_t** head) {
     lexems_t* out;
     if ((*head) == NULL) {
-        exit(1);
+        return NULL;
     }
     out = *head;
     *head = (*head)->next;
@@ -194,11 +208,14 @@ void print_stack(const lexems_t* head) {
     printf("\n");
 }
 
-void clear_stack(lexems_t* head) {
-    while (head) {
-        head = head->next;
-        free(head);
+void clear_stack(lexems_t** head) {
+    if (*head == NULL) {
+        return;
     }
+
+    lexems_t* buf = *head;
+    *head = (*head)->next;
+    free(buf);
 }
 
 int check_sign(char ch) {
@@ -243,6 +260,7 @@ char* check_number(char* str, int* i, int* error) {
         res[calc] = str[j];
         res = (char*)realloc(res, (calc + 1) * (sizeof(char)));
     }
+    res[calc] = '\0';
     *i = j;
     return res;
 }
@@ -283,43 +301,100 @@ int get_size_struct(lexems_t* dev) {
 // dev = 19
 
 int OPN(lexems_t* sourse, lexems_t** result) {
+    int error = 0;
     lexems_t* nums = NULL;
     lexems_t* signs = NULL;
-    print_stack(sourse);
+    // x = 0
+    // -+ = 1
+    // * / mod = 2
+    // ^ = 2
+    // sin cos = 4
+    // num = 5
+    // () = 6
     while (sourse) {
         if (sourse->type == 18) {
             push(&nums, sourse->value, sourse->type, sourse->priority);
         } else {
-            if (signs == NULL) {
-                push(&nums, sourse->value, sourse->type, sourse->priority);
+            if (!signs) {
+                push(&signs, sourse->value, sourse->type, sourse->priority);
             } else {
-                if (peek(signs) > sourse->priority) {
-                    push(&signs, sourse->value, sourse->type, sourse->priority);
-                } else {
-                    pop(&nums);
-                    double a = nums->value;
-                    nums = delete_struct(nums, nums);
-                    pop(&nums);
+                if (sourse->priority <= signs->priority && signs->priority != 6) {
+                    if (!nums) {
+                        error = 1;
+                        break;
+                    }
                     double b = nums->value;
-                    nums = delete_struct(nums, nums);
-                    push(&nums, a+b, 18, 5);
+                    clear_stack(&nums);
+                    double a = nums->value;
+                    clear_stack(&nums);
+                    push(&nums, calc_values(a, b, signs->type), 18, 5);
+                    clear_stack(&signs);
+                }
+                if (sourse->priority == 6) {
+                    if (sourse->type == 15) {
+                        push(&signs, sourse->value, sourse->type, sourse->priority);
+                    }
+                    if (sourse->type == 16) {
+                        if (!nums) {
+                            error = 1;
+                            break;
+                        }
+                        double b = nums->value;
+                        clear_stack(&nums);
+                        if (!nums) {
+                            error = 1;
+                            break;
+                        }
+                        double a = nums->value;
+                        clear_stack(&nums);
+                        push(&nums, calc_values(a, b, signs->type), 18, 5);
+                        clear_stack(&signs);
+                        clear_stack(&signs);
+                    }
+                } else {
+                    push(&signs, sourse->value, sourse->type, sourse->priority);
                 }
             }
         }
         sourse = sourse->next;
     }
-    
+    while (signs) {
+        if (!nums) {
+            error = 1;
+            break;
+        }
+        double b = nums->value;
+        clear_stack(&nums);
+        double a = nums->value;
+        clear_stack(&nums);
+        push(&nums, calc_values(a, b, signs->type), 18, 5);
+        signs = signs->next;
+    }
+    print_stack(nums);
     return 0;
 }
 
-lexems_t* delete_struct(lexems_t* val, lexems_t* sourse) {
-    lexems_t* tmp;
-    tmp = sourse;
-    while (sourse->next != val)  // просматриваем список начиная с корня
-    {  // пока не найдем узел, предшествующий lst
-        tmp = tmp->next;
+double calc_values(double a, double b, int sign) {
+    double res = 0;
+    switch (sign) {
+        case 10:
+            res = a + b;
+            break;
+        case 11:
+            res = a - b;
+            break;
+        case 12:
+            res = a * b;
+            break;
+        case 13:
+            res = a / b;
+            break;
+        case 19:
+            // res = pow(a, b);
+            break;
+        case 14:
+            // res = fmod(a, b);
+            break;
     }
-    tmp->next = val->next;  // переставляем указатель
-    free(val);  // освобождаем память удаляемого узла
-    return (tmp);
+    return res;
 }
