@@ -67,7 +67,7 @@ void transpose_struct(lexems_t** dev, lexems_t* sourse);
 lexems_t* pop(lexems_t** head);
 int peek(const lexems_t* head);
 int check_sign(char sign);
-void print_stack(const lexems_t* head);
+void print_stack(lexems_t* head);
 void clear_stack(lexems_t** head);
 char* check_number(char* str, int* i, int* error);
 int is_num(char* str);
@@ -79,4 +79,5 @@ lexems_t* delete_struct(lexems_t* val, lexems_t* sourse);
 // OPN
 int OPN(lexems_t* sourse, lexems_t** result);
 double calc_values(double a, double b, int sign);
+double calc_func(lexems_t* signs, lexems_t* nums);
 #endif  //  SRC_S21_SMART_CALC_H_

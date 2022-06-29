@@ -1,11 +1,11 @@
 #include "s21_smart_calc.h"
 
 int main() {
-    char* str = "(2*3)+(2*3*2/4/6/6*2)";
+    char* str = "cos(sin(tan(10)))-123123+12^2-2mod3";
+    // cos(11
     lexems_t* stack_p = NULL;
     lexems_t* buf_p = NULL;
     printf("error: %d\n", parcer(str, &stack_p));
-    print_stack(stack_p);
     transpose_struct(&buf_p, stack_p);
     OPN(buf_p, &stack_p);
     return 0;
@@ -83,7 +83,6 @@ int parcer(char* str, lexems_t** stack) {
                 free(buf);
                 break;
             }
-            free(buf);
             push(stack, 0, 14, 2);
             i = i + 2;
         }
@@ -139,43 +138,43 @@ int check_func(char* str, int* i) {
     int check = 0;
     switch (*str) {
         case 'c':
-            if (strstr(str, "cos") != str)
+            if (strstr(str, "cos(") != str)
                 check = 20;
             else
                 check = 1;
             change_position_func(check, i);
             break;
         case 's':
-            if (strstr(str, "sin") == str)
+            if (strstr(str, "sin(") == str)
                 check = 2;
-            else if (strstr(str, "sqrt") == str)
+            else if (strstr(str, "sqrt(") == str)
                 check = 7;
             else
                 check = 20;
             change_position_func(check, i);
             break;
         case 't':
-            if (strstr(str, "tan") == str)
+            if (strstr(str, "tan(") == str)
                 check = 3;
             else
                 check = 20;
             change_position_func(check, i);
             break;
         case 'a':
-            if (strstr(str, "acos") == str)
+            if (strstr(str, "acos(") == str)
                 check = 4;
-            else if (strstr(str, "asin") == str)
+            else if (strstr(str, "asin(") == str)
                 check = 5;
-            else if (strstr(str, "atan") == str)
+            else if (strstr(str, "atan(") == str)
                 check = 6;
             else
                 check = 20;
             change_position_func(check, i);
             break;
         case 'l':
-            if (strstr(str, "ln") == str)
+            if (strstr(str, "ln(") == str)
                 check = 8;
-            else if (strstr(str, "log") == str)
+            else if (strstr(str, "log(") == str)
                 check = 9;
             else
                 check = 20;
@@ -199,11 +198,25 @@ void change_position_func(int check, int* i) {
 
 int is_num(char* str) { return (('0' <= *str) && (*str <= '9')) ? 1 : 0; }
 
-void print_stack(const lexems_t* head) {
-    printf("priority-> ");
+void print_stack(lexems_t* head) {
+    lexems_t* buf_priority = head;
+    lexems_t* buf_type = head;
+    printf("value-> ");
     while (head) {
         printf("%lf ", head->value);
         head = head->next;
+    }
+    printf("\n");
+    printf("priority-> ");
+    while (buf_priority) {
+        printf("%d ", buf_priority->priority);
+        buf_priority = buf_priority->next;
+    }
+    printf("\n");
+    printf("type-> ");
+    while (buf_type) {
+        printf("%d ", buf_type->type);
+        buf_type = buf_type->next;
     }
     printf("\n");
 }
@@ -280,25 +293,6 @@ int get_size_struct(lexems_t* dev) {
     }
     return calc;
 }
-// cos = 1,
-// sin = 2,
-// tan = 3,
-// acos = 4,
-// asin = 5,
-// atan = 6,
-// sqrt = 7,
-// ln = 8,
-// log = 9,
-// sum = 10,
-// sub = 11,
-// mul = 12,
-// division = 13,
-// mod = 14,
-// l_parenthese = 15,
-// r_parenthese = 16,
-// x = 17,
-// num = 18,
-// dev = 19
 
 int OPN(lexems_t* sourse, lexems_t** result) {
     int error = 0;
@@ -323,12 +317,23 @@ int OPN(lexems_t* sourse, lexems_t** result) {
                         error = 1;
                         break;
                     }
-                    double b = nums->value;
-                    clear_stack(&nums);
-                    double a = nums->value;
-                    clear_stack(&nums);
-                    push(&nums, calc_values(a, b, signs->type), 18, 5);
-                    clear_stack(&signs);
+                    if (signs->priority == 4) {
+                        double res = calc_func(signs, nums);
+                        if (isnan(res)) {
+                            error = 4;
+                            break;
+                        }
+                        clear_stack(&nums);
+                        push(&nums, res, 17, 5);
+                        clear_stack(&signs);
+                    } else {
+                        double b = nums->value;
+                        clear_stack(&nums);
+                        double a = nums->value;
+                        clear_stack(&nums);
+                        push(&nums, calc_values(a, b, signs->type), 18, 5);
+                        clear_stack(&signs);
+                    }
                 }
                 if (sourse->priority == 6) {
                     if (sourse->type == 15) {
@@ -339,17 +344,39 @@ int OPN(lexems_t* sourse, lexems_t** result) {
                             error = 1;
                             break;
                         }
-                        double b = nums->value;
-                        clear_stack(&nums);
-                        if (!nums) {
-                            error = 1;
-                            break;
+                        if (signs->type == 15) {
+                            clear_stack(&signs);
+                            double res = calc_func(signs, nums);
+                            if (isnan(res)) {
+                                error = 4;
+                                break;
+                            }
+                            clear_stack(&nums);
+                            push(&nums, res, 17, 5);
+                            clear_stack(&signs);
+                        } else if (signs->priority == 4) {
+                            double res = calc_func(signs, nums);
+                            clear_stack(&signs);
+                            clear_stack(&nums);
+                            if (isnan(res)) {
+                                error = 4;
+                                break;
+                            }
+                            push(&nums, res, 17, 5);
+                            clear_stack(&signs);
+                        } else {
+                            double b = nums->value;
+                            clear_stack(&nums);
+                            if (!nums) {
+                                error = 1;
+                                break;
+                            }
+                            double a = nums->value;
+                            clear_stack(&nums);
+                            push(&nums, calc_values(a, b, signs->type), 18, 5);
+                            clear_stack(&signs);
+                            clear_stack(&signs);
                         }
-                        double a = nums->value;
-                        clear_stack(&nums);
-                        push(&nums, calc_values(a, b, signs->type), 18, 5);
-                        clear_stack(&signs);
-                        clear_stack(&signs);
                     }
                 } else {
                     push(&signs, sourse->value, sourse->type, sourse->priority);
@@ -358,18 +385,31 @@ int OPN(lexems_t* sourse, lexems_t** result) {
         }
         sourse = sourse->next;
     }
+
     while (signs) {
         if (!nums) {
             error = 1;
             break;
         }
-        double b = nums->value;
-        clear_stack(&nums);
-        double a = nums->value;
-        clear_stack(&nums);
-        push(&nums, calc_values(a, b, signs->type), 18, 5);
-        signs = signs->next;
+        if (signs->priority == 4) {
+            double res = calc_func(signs, nums);
+            if (isnan(res)) {
+                error = 4;
+                break;
+            }
+            clear_stack(&nums);
+            push(&nums, res, 17, 5);
+            clear_stack(&signs);
+        } else {
+            double b = nums->value;
+            clear_stack(&nums);
+            double a = nums->value;
+            clear_stack(&nums);
+            push(&nums, calc_values(a, b, signs->type), 18, 5);
+            clear_stack(&signs);
+        }
     }
+
     print_stack(nums);
     return 0;
 }
@@ -390,10 +430,43 @@ double calc_values(double a, double b, int sign) {
             res = a / b;
             break;
         case 19:
-            // res = pow(a, b);
+            res = pow(a, b);
             break;
         case 14:
-            // res = fmod(a, b);
+            res = fmod(a, b);
+            break;
+    }
+    return res;
+}
+double calc_func(lexems_t* signs, lexems_t* nums) {
+    double res;
+    switch (signs->type) {
+        case 1:
+            res = cos(nums->value);
+            break;
+        case 2:
+            res = sin(nums->value);
+            break;
+        case 3:
+            res = tan(nums->value);
+            break;
+        case 4:
+            res = acos(nums->value);
+            break;
+        case 5:
+            res = asin(nums->value);
+            break;
+        case 6:
+            res = atan(nums->value);
+            break;
+        case 7:
+            res = sqrt(nums->value);
+            break;
+        case 8:
+            res = log(nums->value);
+            break;
+        case 9:
+            res = log(nums->value);
             break;
     }
     return res;
