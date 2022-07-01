@@ -25,8 +25,10 @@ lexems_t* OPN(lexems_t* sourse) {
                              sourse->priority);
                     }
                     if (sourse->type == 16) {
-                        if (change_stack_parentheses_OPN(&signs, &nums)){error = 5; break;}
-
+                        if (change_stack_parentheses_OPN(&signs, &nums)) {
+                            error = 5;
+                            break;
+                        }
                     }
                 } else {
                     push(&signs, sourse->value, sourse->type, sourse->priority);
@@ -35,6 +37,12 @@ lexems_t* OPN(lexems_t* sourse) {
         }
         sourse = sourse->next;
     }
+    // lexems_t* res_signs = NULL;
+    // lexems_t* res_num = NULL;
+    // transpose_struct(&res_signs, signs);
+    // transpose_struct(&res_num, nums);
+    // last_change_stack_OPN(&res_signs, &res_num);
+    // print_stack(res_num);
     if (error || last_change_stack_OPN(&signs, &nums)) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
@@ -42,5 +50,5 @@ lexems_t* OPN(lexems_t* sourse) {
     } else {
         while (signs) clear_stack(&nums);
         return nums;
-    }
+    }   
 }

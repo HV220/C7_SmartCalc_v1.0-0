@@ -62,6 +62,7 @@ double calc_func_OPN(lexems_t* signs, lexems_t* nums) {
 }
 
 int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
+    while(*signs){
     if ((*signs)->priority == 4) {
         double res = calc_func_OPN(*signs, *nums);
         if (isnan(res)) return 4;
@@ -77,7 +78,7 @@ int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
         clear_stack(nums);
         push(nums, calc_values_OPN(a, b, (*signs)->type), 18, 5);
         clear_stack(signs);
-    }
+    }}
     return 0;
 }
 
@@ -117,7 +118,6 @@ int last_change_stack_OPN(lexems_t** signs, lexems_t** nums) {
         if ((*signs)->priority == 6) return 6;
         if ((*signs)->priority == 4) {
             double res = calc_func_OPN(*signs, *nums);
-            if (isnan(res)) return 4;
             clear_stack(nums);
             push(nums, res, 17, 5);
             clear_stack(signs);

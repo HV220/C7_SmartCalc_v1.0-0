@@ -3,9 +3,8 @@
 int main() {
     lexems_t *res;
     lexems_t *buf;
-   double count = cos(1);
-       char *src =
-        "cos(1)";
+    double count = (+1)-acos(1)-asin(1)+atan(1)-sin(1)+tan(1)-(cos(1)-cos(1))-sqrt(1)-pow(2,2)/(4+1-1*23*5/4/6);
+    char *src = "(+1)-acos(1)-asin(1)+atan(1)-sin(1)+tan(1)-(cos(1)-cos(1))-sqrt(1)-pow(2,2)/(4+1-1*23*5/4/6)";
     res = parcer(src);
     transpose_struct(&buf, res);
     res = OPN(buf);
