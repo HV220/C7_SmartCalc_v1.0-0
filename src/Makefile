@@ -1,20 +1,11 @@
 .PHONY: all install dvi dist tests gcov_report open rebuild clean
-g = gcc
 flags = -Wall -Wextra -Werror -std=c11
 LINUX = -lrt -lpthread -lm -lsubunit
-LIBS = -lcheck
+LIBS = -lm -lcheck
 LFLAGS = -fprofile-arcs -ftest-coverage
 OS = $(shell uname -s)
 
-
-all: clean s21_smart_calc.a check gcov_report 
-
-s21_smart_calc.a: s21_smart_calc
-	ar rcs s21_smart_calc.a s21_smart_calc.o
-	ranlib s21_smart_calc.a
-
-s21_smart_calc: s21_smart_calc.c
-	$(g) $(flags) s21_smart_calc.c -o s21_smart_calc.o
+all: clean check gcov_report 
 
 install:
 
@@ -24,12 +15,12 @@ dvi:
 
 dist:
 
-tests: s21_smart_calc.a
+tests:
 ifeq ($(OS), Darwin)
-		$(g) $(flags) $(LFLAGS) s21_test.c s21_smart_calc.a -o test.out $(LIBS)
+		gcc $(flags) $(LFLAGS) s21_test.c support_func.c parser.c OPN.c -o test.out $(LIBS)
 		./test.out
 else
-		$(g) $(flags) $(LFLAGS) s21_test.c s21_smart_calc.a -o test.out $(LIBS) $(LINUX)
+		gcc $(flags) $(LFLAGS) s21_test.c support_func.c parser.c OPN.c -o test.out $(LIBS) $(LINUX)
 		./test.out
 endif
 
@@ -40,7 +31,7 @@ gcov_report: tests
 check:
 	cppcheck --enable=all --suppress=missingIncludeSystem *.c *.h
 	python3 ../materials/linters/cpplint.py --extensions=c *.c *.h
-	make test
+	make tests
 ifeq ($(OS), Darwin)
 	CK_FORK=no leaks --atExit -- ./test.out
 else

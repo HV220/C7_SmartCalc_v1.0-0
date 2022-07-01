@@ -1,13 +1,32 @@
-
 #include <check.h>
 
 #include "s21_smart_calc.h"
 
 START_TEST(s21_parser_test) {
+    // char *str = NULL;
+    // ck_assert_ptr_eq(parcer(str), NULL);
+    char *str = "12+1(";
+    ck_assert_ptr_eq(parcer(str), NULL);
+    str =
+        "cos(10)+sin(10)-tan(12)/acos(12)*asin(12)+atan(12)-2^2*ln(12)+log(9)/"
+        "(-1)*(12331)("
+        "2mod3(";
+    ck_assert_ptr_eq(parcer(str), NULL);
+    str = "2mo3";
+    ck_assert_ptr_eq(parcer(str), NULL);
 }
 END_TEST
 
 START_TEST(s21_OPN_test) {
+    lexems_t *res = NULL;
+    lexems_t *buf = NULL;
+    double count = acos(1)-asin(1);
+    //cos(1)+tan(1)-log(1)/2mod3*ln(1)*2^2+acos(1)-1
+    char *src = "acos(1)";
+    res = parcer(src);
+    transpose_struct(&buf, res);
+    res = OPN(buf);
+    ck_assert_double_eq(res->value, count);
 }
 END_TEST
 

@@ -2,12 +2,13 @@
 
 lexems_t* parcer(char* str) {
     int error = 0;
-    int tmp = 0;
     int l_check = 0;
     int r_check = 0;
+    if(!str) return NULL;
     lexems_t* stack = NULL;
     for (int i = 0; str[i] && str[i] != '\n'; i++) {
-        if (str[i] == '(' && (tmp = check_sign(str[i + 1]))) {
+        if (str[i] == '(' && check_sign(str[i + 1])) {
+            int tmp = check_sign(str[i + 1]);
             if (tmp == 12 || tmp == 13 || tmp == 19) {
                 error = 2;
                 break;
@@ -66,12 +67,14 @@ lexems_t* parcer(char* str) {
             free(buf);
             i--;
         }
-        if ((tmp = check_func(str + i, &i))) {
-            if (tmp == 20) {
+        if (check_func(str + i)) {
+            int check = check_func(str + i);
+            if (check == 20) {
                 error = 4;
                 break;
             }
-            push(&stack, 0, tmp, 4);
+            change_position_func(check, &i);
+            push(&stack, 0, check, 4);
         }
         if (str[i] == 'x') push(&stack, 0, 17, 0);
     }

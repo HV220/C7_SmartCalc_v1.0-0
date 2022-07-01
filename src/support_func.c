@@ -55,14 +55,14 @@ double calc_func_OPN(lexems_t* signs, lexems_t* nums) {
         case 9:
             res = log(nums->value);
             break;
+        default:
+            break;
     }
     return res;
 }
 
 int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
-    if (!*nums) return 1;
     if ((*signs)->priority == 4) {
-        if (!*nums) return 1;
         double res = calc_func_OPN(*signs, *nums);
         if (isnan(res)) return 4;
         clear_stack(nums);
@@ -82,7 +82,6 @@ int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
 }
 
 int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums) {
-    if (!*nums) return 1;
     if ((*signs)->type == 15) {
         clear_stack(signs);
         if (!*nums) return 1;
@@ -100,7 +99,6 @@ int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums) {
         push(nums, res, 17, 5);
         clear_stack(signs);
     } else {
-        if (!*nums) return 1;
         double b = (*nums)->value;
         clear_stack(nums);
         if (!*nums) return 1;
@@ -116,10 +114,8 @@ int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums) {
 int last_change_stack_OPN(lexems_t** signs, lexems_t** nums) {
     int error = 0;
     while (*signs) {
-        if (!*nums) return 1;
         if ((*signs)->priority == 6) return 6;
         if ((*signs)->priority == 4) {
-            if (!*nums) return 1;
             double res = calc_func_OPN(*signs, *nums);
             if (isnan(res)) return 4;
             clear_stack(nums);
@@ -153,32 +149,14 @@ void push(lexems_t** head, double value, int type, int priority) {
     *head = tmp;
 }
 
-lexems_t* pop(lexems_t** head) {
-    lexems_t* out;
-    if ((*head) == NULL) {
-        return NULL;
-    }
-    out = *head;
-    *head = (*head)->next;
-    return out;
-}
-
-int peek(const lexems_t* head) {
-    if (head == NULL) {
-        exit(1);
-    }
-    return head->priority;
-}
-
-int check_func(char* str, int* i) {
+int check_func(char* str) {
     int check = 0;
     switch (*str) {
         case 'c':
-            if (strstr(str, "cos") != str)
-                check = 20;
-            else
+            if (strstr(str, "cos") == str)
                 check = 1;
-            change_position_func(check, i);
+            else
+                check = 20;
             break;
         case 's':
             if (strstr(str, "sin") == str)
@@ -187,14 +165,12 @@ int check_func(char* str, int* i) {
                 check = 7;
             else
                 check = 20;
-            change_position_func(check, i);
             break;
         case 't':
             if (strstr(str, "tan") == str)
                 check = 3;
             else
                 check = 20;
-            change_position_func(check, i);
             break;
         case 'a':
             if (strstr(str, "acos") == str)
@@ -205,7 +181,6 @@ int check_func(char* str, int* i) {
                 check = 6;
             else
                 check = 20;
-            change_position_func(check, i);
             break;
         case 'l':
             if (strstr(str, "ln") == str)
@@ -214,7 +189,6 @@ int check_func(char* str, int* i) {
                 check = 9;
             else
                 check = 20;
-            change_position_func(check, i);
             break;
     }
     return check;
@@ -232,7 +206,7 @@ void change_position_func(int check, int* i) {
     if (check == 9) *i = *i + 2;
 }
 
-int is_num(char* str) { return (('0' <= *str) && (*str <= '9')) ? 1 : 0; }
+int is_num(const char* str) { return (('0' <= *str) && (*str <= '9')) ? 1 : 0; }
 
 void print_stack(lexems_t* head) {
     lexems_t* buf_priority = head;
@@ -293,6 +267,7 @@ char* check_number(char* str, int* i, int* error) {
     int j = *i;
     int calc = 0;
     char* res = (char*)malloc(calc * (sizeof(char)));
+    char* tmp;
     for (; str[j] && str[j] != '\n' && !(*error); j++, calc++) {
         if (!is_num(str + j)) {
             if (str[j] == '.') {
@@ -306,7 +281,11 @@ char* check_number(char* str, int* i, int* error) {
             }
         }
         res[calc] = str[j];
-        res = (char*)realloc(res, (calc + 1) * (sizeof(char)));
+        tmp = (char*)realloc(res, (calc + 1) * (sizeof(char)));
+        if (res)
+            res = tmp;
+        else
+            free(tmp);
     }
     res[calc] = '\0';
     *i = j;
@@ -318,15 +297,6 @@ void transpose_struct(lexems_t** dev, lexems_t* sourse) {
         push(dev, sourse->value, sourse->type, sourse->priority);
         sourse = sourse->next;
     }
-}
-
-int get_size_struct(lexems_t* dev) {
-    int calc = 0;
-    while (dev) {
-        calc++;
-        dev = dev->next;
-    }
-    return calc;
 }
 
 void push_sign(lexems_t** stack, int sign) {
