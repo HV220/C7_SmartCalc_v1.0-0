@@ -3,8 +3,6 @@
 #include "s21_smart_calc.h"
 
 START_TEST(s21_parser_test) {
-    // char *str = NULL;
-    // ck_assert_ptr_eq(parcer(str), NULL);
     char *str = "12+1(";
     ck_assert_ptr_eq(parcer(str), NULL);
     str =
@@ -20,14 +18,11 @@ END_TEST
 START_TEST(s21_OPN_test) {
     lexems_t *res = NULL;
     lexems_t *buf = NULL;
-    double count = (+1)-acos(1)-asin(1)+atan(1)-sin(1)+tan(1)-(cos(1)-cos(1))-sqrt(1)-pow(2,2)/(4+1-1*23*5/4/6);
-    //cos(1)+tan(1)-log(1)/2mod3*ln(1)*2^2+acos(1)-1
-    char *src = "(+1)-acos(1)-asin(1)+atan(1)-sin(1)+tan(1)-(cos(1)-cos(1))-sqrt(1)-2^2/(4+1-1*23*5/4/6)";
+    char *src = "(+1)-sin(1)-sin(1)+sin(1)-cos(1)+tan(1)-(cos(1)-cos(1))-sqrt(1)-2^2/(4+1-1*23*5/4/6)/((cos(1)+cos(2))/(1+2+3))/7";
     res = parcer(src);
     transpose_struct(&buf, res);
-    //res = OPN(buf);
-    printf("%lf",count);
-    //ck_assert_ldouble_eq_tol(res->value, count, 1e-7);
+    res = OPN(buf);
+    ck_assert_double_eq_tol(res->value, -132.3770670067721922, 1e-7);
 }
 END_TEST
 

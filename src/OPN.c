@@ -43,12 +43,13 @@ lexems_t* OPN(lexems_t* sourse) {
     // transpose_struct(&res_num, nums);
     // last_change_stack_OPN(&res_signs, &res_num);
     // print_stack(res_num);
-    if (error || last_change_stack_OPN(&signs, &nums)) {
+    error = last_change_stack_OPN(&signs, &nums);
+    if (error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
         return NULL;
     } else {
         while (signs) clear_stack(&nums);
         return nums;
-    }   
+    }
 }

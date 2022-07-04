@@ -62,58 +62,54 @@ double calc_func_OPN(lexems_t* signs, lexems_t* nums) {
 }
 
 int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
-    while(*signs){
+    if ((*signs) == NULL) return 4;
+    if ((*nums) == NULL) return 1;
+
     if ((*signs)->priority == 4) {
         double res = calc_func_OPN(*signs, *nums);
         if (isnan(res)) return 4;
         clear_stack(nums);
-        push(nums, res, 17, 5);
+        push(nums, res, 18, 5);
         clear_stack(signs);
     } else {
-        if (!*nums) return 1;
+        if ((*nums) == NULL) return 1;
         double b = (*nums)->value;
         clear_stack(nums);
-        if (!*nums) return 1;
+        if ((*nums) == NULL) return 1;
         double a = (*nums)->value;
         clear_stack(nums);
         push(nums, calc_values_OPN(a, b, (*signs)->type), 18, 5);
-        clear_stack(signs);
-    }}
-    return 0;
-}
-
-int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums) {
-    if ((*signs)->type == 15) {
-        clear_stack(signs);
-        if (!*nums) return 1;
-        double res = calc_func_OPN(*signs, *nums);
-        if (isnan(res)) return 4;
-        clear_stack(nums);
-        push(nums, res, 17, 5);
-        clear_stack(signs);
-    } else if ((*signs)->priority == 4) {
-        double res = calc_func_OPN(*signs, *nums);
-        clear_stack(signs);
-        if (!*nums) return 1;
-        clear_stack(nums);
-        if (isnan(res)) return 4;
-        push(nums, res, 17, 5);
-        clear_stack(signs);
-    } else {
-        double b = (*nums)->value;
-        clear_stack(nums);
-        if (!*nums) return 1;
-        double a = (*nums)->value;
-        clear_stack(nums);
-        push(nums, calc_values_OPN(a, b, (*signs)->type), 18, 5);
-        clear_stack(signs);
         clear_stack(signs);
     }
     return 0;
 }
 
+int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums) {
+    while (*signs) {
+        if ((*signs)->type == 15) {
+            clear_stack(signs);
+            if ((*signs) && (*signs)->priority == 4) {
+                double res = calc_func_OPN(*signs, *nums);
+                if (isnan(res)) return 4;
+                clear_stack(nums);
+                push(nums, res, 18, 5);
+                clear_stack(signs);
+            }
+            break;
+        } else {
+            double b = (*nums)->value;
+            clear_stack(nums);
+            if ((*nums) == NULL) return 1;
+            double a = (*nums)->value;
+            clear_stack(nums);
+            push(nums, calc_values_OPN(a, b, (*signs)->type), 18, 5);
+            clear_stack(signs);
+        }
+    }
+    return 0;
+}
+
 int last_change_stack_OPN(lexems_t** signs, lexems_t** nums) {
-    int error = 0;
     while (*signs) {
         if ((*signs)->priority == 6) return 6;
         if ((*signs)->priority == 4) {
@@ -132,9 +128,7 @@ int last_change_stack_OPN(lexems_t** signs, lexems_t** nums) {
             clear_stack(signs);
         }
     }
-    if ((*nums)->next) return 1;
-
-    return error;
+    return 0;
 }
 
 void push(lexems_t** head, double value, int type, int priority) {
@@ -209,6 +203,7 @@ void change_position_func(int check, int* i) {
 int is_num(const char* str) { return (('0' <= *str) && (*str <= '9')) ? 1 : 0; }
 
 void print_stack(lexems_t* head) {
+    if (!head) return;
     lexems_t* buf_priority = head;
     lexems_t* buf_type = head;
     printf("value-> ");
