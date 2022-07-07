@@ -37,12 +37,6 @@ lexems_t* OPN(lexems_t* sourse) {
         }
         sourse = sourse->next;
     }
-    // lexems_t* res_signs = NULL;
-    // lexems_t* res_num = NULL;
-    // transpose_struct(&res_signs, signs);
-    // transpose_struct(&res_num, nums);
-    // last_change_stack_OPN(&res_signs, &res_num);
-    // print_stack(res_num);
     error = last_change_stack_OPN(&signs, &nums);
     if (error) {
         while (nums) clear_stack(&nums);

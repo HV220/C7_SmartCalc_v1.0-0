@@ -8,8 +8,18 @@ OS = $(shell uname -s)
 all: clean check gcov_report 
 
 install:
+ifeq ($(OS), Darwin)
+		
+else
+	sudo apt-get install build-essential libgl1-mesa-dev
+endif
 
 uninstall:
+ifeq ($(OS), Darwin)
+		
+else
+	sudo apt autoremove
+endif
 
 dvi:
 
@@ -32,6 +42,7 @@ check:
 	cppcheck --enable=all --suppress=missingIncludeSystem *.c *.h
 	python3 ../materials/linters/cpplint.py --extensions=c *.c *.h
 	make tests
+
 ifeq ($(OS), Darwin)
 	CK_FORK=no leaks --atExit -- ./test.out
 else
