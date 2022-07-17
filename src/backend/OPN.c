@@ -43,7 +43,7 @@ lexems_t* OPN(lexems_t* sourse) {
         while (signs) clear_stack(&signs);
         return NULL;
     } else {
-        while (signs) clear_stack(&nums);
+        while (signs) clear_stack(&signs);
         return nums;
     }
 }

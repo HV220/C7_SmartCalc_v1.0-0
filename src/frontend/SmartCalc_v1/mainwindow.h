@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <string.h>
+
+extern "C" {
+#include "../../backend/s21_smart_calc.h"
+}
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,6 +23,7 @@ class MainWindow : public QMainWindow {
 
    private:
     Ui::MainWindow *ui;
+
    private slots:
     void digits_numbers();
     void on_Button_point_clicked();
@@ -25,5 +31,6 @@ class MainWindow : public QMainWindow {
     void on_Button_AC_clicked();
     void on_Button_res_clicked();
     void math_operations();
+    void on_Button_unar_clicked();
 };
 #endif  // MAINWINDOW_H

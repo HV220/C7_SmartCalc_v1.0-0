@@ -34,17 +34,9 @@ typedef struct lexems {
     lexems_type_t type;
 } lexems_t;
 
-// x = 0
-// -+ = 1
-// * / mod = 2
-// ^ = 2
-// sin cos = 4
-// num = 5
-// () = 6
-
 //  parcer
 
-lexems_t* parcer(char* str);
+lexems_t* parcer(const char* str);
 void push(lexems_t** head, double value, int type, int priority);
 void transpose_struct(lexems_t** dev, lexems_t* sourse);
 lexems_t* pop(lexems_t** head);
@@ -52,9 +44,9 @@ int peek(const lexems_t* head);
 int check_sign(char sign);
 void print_stack(lexems_t* head);
 void clear_stack(lexems_t** head);
-char* check_number(char* str, int* i, int* error);
+char* check_number(const char* str, int* i, int* error);
 int is_num(const char* str);
-int check_func(char* str);
+int check_func(const char* str);
 void change_position_func(int check, int* i);
 int get_size_struct(lexems_t* dev);
 void init_struct(lexems_t** sourse);

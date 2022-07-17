@@ -1,10 +1,10 @@
 #include "s21_smart_calc.h"
 
-lexems_t* parcer(char* str) {
+lexems_t* parcer(const char* str) {
     int error = 0;
     int l_check = 0;
     int r_check = 0;
-    if(!str) return NULL;
+    if (!str) return NULL;
     lexems_t* stack = NULL;
     for (int i = 0; str[i] && str[i] != '\n'; i++) {
         if (str[i] == '(' && check_sign(str[i + 1])) {

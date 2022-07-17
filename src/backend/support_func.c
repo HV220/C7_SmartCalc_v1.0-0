@@ -56,6 +56,7 @@ double calc_func_OPN(lexems_t* signs, lexems_t* nums) {
             res = log(nums->value);
             break;
         default:
+            res = INFINITY;
             break;
     }
     return res;
@@ -143,7 +144,7 @@ void push(lexems_t** head, double value, int type, int priority) {
     *head = tmp;
 }
 
-int check_func(char* str) {
+int check_func(const char* str) {
     int check = 0;
     switch (*str) {
         case 'c':
@@ -257,18 +258,17 @@ int check_sign(char ch) {
     return res;
 }
 
-char* check_number(char* str, int* i, int* error) {
+char* check_number(const char* str, int* i, int* error) {
     *error = 0;
     int j = *i;
     int calc = 0;
-    char* res = (char*)malloc(calc * (sizeof(char)));
-    char* tmp;
+    char* res = (char*)calloc(calc, (sizeof(char)));
+    if (!res) return NULL;
     for (; str[j] && str[j] != '\n' && !(*error); j++, calc++) {
         if (!is_num(str + j)) {
             if (str[j] == '.') {
                 if (!is_num(str + (j + 1))) {
                     *error = 5;
-                    free(res);
                     break;
                 }
             } else {
@@ -276,15 +276,19 @@ char* check_number(char* str, int* i, int* error) {
             }
         }
         res[calc] = str[j];
-        tmp = (char*)realloc(res, (calc + 1) * (sizeof(char)));
-        if (res)
-            res = tmp;
-        else
-            free(tmp);
+        res = (char*)realloc(res, (calc + 1) * (sizeof(char)));
+    if(!res) break;
     }
-    res[calc] = '\0';
-    *i = j;
-    return res;
+    if(res) {
+        if(*error) {
+            free(res); return NULL; } else {
+        res[calc] = '\0';
+        *i = j;
+        return res; }
+    } else {
+        *error = 5;
+        return NULL;
+    }
 }
 
 void transpose_struct(lexems_t** dev, lexems_t* sourse) {

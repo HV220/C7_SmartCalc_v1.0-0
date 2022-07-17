@@ -8,11 +8,11 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}/s21_smart_calc.c",
-                "${fileDirname}/parser.c",
+                "${fileDirname}/parcer.c",
                 "${fileDirname}/OPN.c",
                 "${fileDirname}/support_func.c",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}", 
+                "${fileDirname}/${fileBasenameNoExtension}",
                 "-lm"
             ],
             "options": {

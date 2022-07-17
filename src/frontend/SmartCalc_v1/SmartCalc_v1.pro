@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,20 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ../../backend/OPN.c \
-    ../../backend/parser.c \
-    ../../backend/s21_smart_calc.c \
-    ../../backend/s21_test.c \
+    ../../backend/parcer.c \
     ../../backend/support_func.c \
+    grafic.cpp \
     main.cpp \
-    mainwindow.cpp
-    ../../backend/OPN.c
-    ../../backend/support_func.c
-    ../../backend/parser.c
+    mainwindow.cpp \
+    qcustomplot.cpp
 HEADERS += \
     ../../backend/s21_smart_calc.h \
-    mainwindow.h
-    ../../backend/s21_smart_calc.h
+    grafic.h \
+    mainwindow.h \
+    qcustomplot.h
 FORMS += \
+    grafic.ui \
     mainwindow.ui
 
 # Default rules for deployment.

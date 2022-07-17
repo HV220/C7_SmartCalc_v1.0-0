@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jul  6 21:19:46 2022
+# Make data base, printed on Sun Jul 17 18:47:32 2022
 
 # Variables
 
@@ -47,7 +49,7 @@ VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{"*":"ru"},"_languagePac
 # environment
 _ = /usr/bin/code
 # environment
-JOURNAL_STREAM = 8:32177
+JOURNAL_STREAM = 8:34337
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -65,9 +67,9 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 898
+MANAGERPID = 948
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-e68a6eef-d558-4cb5-b3bc-2389484d7b3d.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-6aafddb4-d4c1-4ff8-bb3d-2f9e8361a762.sock
 # environment
 VSCODE_CWD = /home/korpositas
 # default
@@ -79,7 +81,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-SESSION_MANAGER = local/korpositas-desktop:@/tmp/.ICE-unix/1155,unix/korpositas-desktop:/tmp/.ICE-unix/1155
+SESSION_MANAGER = local/korpositas-desktop:@/tmp/.ICE-unix/1204,unix/korpositas-desktop:/tmp/.ICE-unix/1204
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -89,7 +91,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = ffee1122b761451493ed9e1111e0f448
+INVOCATION_ID = 957aa22cc15e4e938b694f04d0f16f33
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -111,7 +113,7 @@ PWD = /home/korpositas/projects_school/C7_SmartCalc_v1.0-0
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1118
+SSH_AGENT_PID = 1167
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -197,11 +199,11 @@ LC_ALL = C
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/6a6abb2d_bb95_440b_b80b_64f34c251894
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/7ac82eb8_18a1_484a_a1c9_9e88085fd28a
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.97
+GNOME_TERMINAL_SERVICE = :1.144
 # default
 SUFFIXES := 
 # environment
@@ -219,7 +221,7 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 2751
+VSCODE_PID = 6517
 # variable set hash-table stats:
 # Load=105/1024=10%, Rehash=0, Collisions=14/127=11%
 
@@ -279,6 +281,7 @@ GNUmakefile:
 
 # No 'vpath' search paths.
 
+ 
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 23 / storage = 210 B / avg = 9 B
@@ -286,10 +289,7 @@ GNUmakefile:
 
 # strcache performance: lookups = 26 / hit rate = 11%
 # hash-table stats:
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # Load=23/8192=0%, Rehash=0, Collisions=1/26=4%
-# Finished Make data base on Wed Jul  6 21:19:46 2022
+# Finished Make data base on Sun Jul 17 18:47:32 2022
 
  

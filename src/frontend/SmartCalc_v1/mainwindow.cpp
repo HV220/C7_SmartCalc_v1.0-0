@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "../../backend/s21_smart_calc.h"
+#include "grafic.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -54,7 +54,6 @@ void MainWindow::digits_numbers()
 
 void MainWindow::on_Button_point_clicked()
 {
-    if(!(ui->text_view->text().contains('.')))
         ui->text_view->setText(ui->text_view->text() + ".");
 }
 
@@ -76,30 +75,20 @@ void MainWindow::operations()
 
 void MainWindow::on_Button_AC_clicked()
 {
-    ui->text_view->setText("");
+    ui->text_view->clear();
 }
 
 void MainWindow::on_Button_res_clicked()
 {
-    int error = 0;
-    char * str = (char *)ui->text_view;
-    QString new_lable;
+    QByteArray test = ui->text_view->text().toLocal8Bit();
+    const char *str = test.data();
     lexems_t *buf = NULL;
-
     lexems_t *res_str  = parcer(str);
-
-    if(res_str) {
-        transpose_struct(&buf, res_str);
-        res_str = OPN(buf);
-        if(res_str) {
-        new_lable = QString::number(res_str->value,'g', 15);
-        ui->text_view->setText(new_lable);
-        }
-        else {
-            error = 1;
-        }
+    transpose_struct(&buf, res_str);
+    res_str = OPN(buf);
+    if(!res_str) { ui->text_view->setText("INVALID ERROR");
     } else {
-        error = 1;
+        ui->text_view->setText(QString::number(res_str->value, 'g', 15));
     }
 }
 
@@ -113,24 +102,31 @@ void MainWindow::math_operations()
     } else if(button->text() == "*") {
         ui->text_view->setText(ui->text_view->text() + "*");
     } else if(button->text() == "÷") {
-        ui->text_view->setText(ui->text_view->text() + "÷");
+        ui->text_view->setText(ui->text_view->text() + "/");
     } else if(button->text() == "x") {
         ui->text_view->setText(ui->text_view->text() + "x");
     } else if(button->text() == "sin") {
-            ui->text_view->setText(ui->text_view->text() + "sin");
+            ui->text_view->setText(ui->text_view->text() + "sin(");
     } else if(button->text() == "asin") {
-        ui->text_view->setText(ui->text_view->text() + "asin");
+        ui->text_view->setText(ui->text_view->text() + "asin(");
     } else if(button->text() == "cos") {
-        ui->text_view->setText(ui->text_view->text() + "cos");
+        ui->text_view->setText(ui->text_view->text() + "cos(");
     } else if(button->text() == "acos") {
-        ui->text_view->setText(ui->text_view->text() + "acos");
+        ui->text_view->setText(ui->text_view->text() + "acos(");
     } else if(button->text() == "tan") {
-        ui->text_view->setText(ui->text_view->text() + "tan");
+        ui->text_view->setText(ui->text_view->text() + "tan(");
     } else if(button->text() == "atan") {
-        ui->text_view->setText(ui->text_view->text() + "atan");
+        ui->text_view->setText(ui->text_view->text() + "atan(");
     } else if(button->text() == "ln") {
-        ui->text_view->setText(ui->text_view->text() + "ln");
+        ui->text_view->setText(ui->text_view->text() + "ln(");
     } else if(button->text() == "log") {
-        ui->text_view->setText(ui->text_view->text() + "log");
+        ui->text_view->setText(ui->text_view->text() + "log(");
     }
+}
+
+void MainWindow::on_Button_unar_clicked()
+{
+    grafic graf;
+    graf.setModal(true);
+    graf.exec();
 }
