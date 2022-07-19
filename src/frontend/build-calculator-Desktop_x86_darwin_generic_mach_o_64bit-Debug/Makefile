@@ -57,16 +57,20 @@ SOURCES       = ../../backend/OPN.c \
 		../../backend/support_func.c \
 		../calculator/grafic.cpp \
 		../calculator/main.cpp \
-		../calculator/mainwindow.cpp moc_grafic.cpp \
-		moc_mainwindow.cpp
+		../calculator/mainwindow.cpp \
+		../calculator/qcustomplot.cpp moc_grafic.cpp \
+		moc_mainwindow.cpp \
+		moc_qcustomplot.cpp
 OBJECTS       = OPN.o \
 		parcer.o \
 		support_func.o \
 		grafic.o \
 		main.o \
 		mainwindow.o \
+		qcustomplot.o \
 		moc_grafic.o \
-		moc_mainwindow.o
+		moc_mainwindow.o \
+		moc_qcustomplot.o
 DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/device_config.prf \
 		/usr/local/share/qt/mkspecs/common/unix.conf \
@@ -324,12 +328,14 @@ DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/lex.prf \
 		../calculator/calculator.pro ../../backend/s21_smart_calc.h \
 		../calculator/grafic.h \
-		../calculator/mainwindow.h ../../backend/OPN.c \
+		../calculator/mainwindow.h \
+		../calculator/qcustomplot.h ../../backend/OPN.c \
 		../../backend/parcer.c \
 		../../backend/support_func.c \
 		../calculator/grafic.cpp \
 		../calculator/main.cpp \
-		../calculator/mainwindow.cpp
+		../calculator/mainwindow.cpp \
+		../calculator/qcustomplot.cpp
 QMAKE_TARGET  = calculator
 DESTDIR       = 
 TARGET        = calculator.app/Contents/MacOS/calculator
@@ -350,7 +356,7 @@ include /usr/local/share/qt/mkspecs/features/mac/sdk.mk
 first: all
 ####### Build rules
 
-calculator.app/Contents/MacOS/calculator: ui_grafic.h $(OBJECTS)  
+calculator.app/Contents/MacOS/calculator: ui_grafic.h ui_mainwindow.h $(OBJECTS)  
 	@test -d calculator.app/Contents/MacOS/ || mkdir -p calculator.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -905,9 +911,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../backend/s21_smart_calc.h ../calculator/grafic.h ../calculator/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../backend/OPN.c ../../backend/parcer.c ../../backend/support_func.c ../calculator/grafic.cpp ../calculator/main.cpp ../calculator/mainwindow.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../calculator/grafic.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../backend/s21_smart_calc.h ../calculator/grafic.h ../calculator/mainwindow.h ../calculator/qcustomplot.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../backend/OPN.c ../../backend/parcer.c ../../backend/support_func.c ../calculator/grafic.cpp ../calculator/main.cpp ../calculator/mainwindow.cpp ../calculator/qcustomplot.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../calculator/grafic.ui ../calculator/mainwindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -942,14 +948,17 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/local/share/qt/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/local/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_grafic.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_grafic.cpp moc_mainwindow.cpp moc_qcustomplot.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_grafic.cpp moc_mainwindow.cpp
+	-$(DEL_FILE) moc_grafic.cpp moc_mainwindow.cpp moc_qcustomplot.cpp
 moc_grafic.cpp: ../calculator/grafic.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QDialog \
 		/usr/local/lib/QtWidgets.framework/Headers/qdialog.h \
 		/usr/local/lib/QtCore.framework/Headers/QVector \
 		/usr/local/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/lib/QtCore.framework/Headers/qtimer.h \
+		../../backend/s21_smart_calc.h \
 		moc_predefs.h \
 		/usr/local/share/qt/libexec/moc
 	/usr/local/share/qt/libexec/moc $(DEFINES) --include /Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/build-calculator-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/share/qt/mkspecs/macx-clang -I/Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/calculator -I/usr/local/lib/QtPrintSupport.framework/Headers -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/lib ../calculator/grafic.h -o moc_grafic.cpp
@@ -962,21 +971,39 @@ moc_mainwindow.cpp: ../calculator/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/qdialog.h \
 		/usr/local/lib/QtCore.framework/Headers/QVector \
 		/usr/local/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/lib/QtCore.framework/Headers/qtimer.h \
 		../../backend/s21_smart_calc.h \
 		moc_predefs.h \
 		/usr/local/share/qt/libexec/moc
 	/usr/local/share/qt/libexec/moc $(DEFINES) --include /Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/build-calculator-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/share/qt/mkspecs/macx-clang -I/Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/calculator -I/usr/local/lib/QtPrintSupport.framework/Headers -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/lib ../calculator/mainwindow.h -o moc_mainwindow.cpp
 
+moc_qcustomplot.cpp: ../calculator/qcustomplot.h \
+		/usr/local/lib/QtCore.framework/Headers/qmath.h \
+		/usr/local/lib/QtCore.framework/Headers/qnumeric.h \
+		/usr/local/lib/QtCore.framework/Headers/QtNumeric \
+		moc_predefs.h \
+		/usr/local/share/qt/libexec/moc
+	/usr/local/share/qt/libexec/moc $(DEFINES) --include /Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/build-calculator-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/share/qt/mkspecs/macx-clang -I/Users/aladales/project_school21/C7_SmartCalc_v1.0-0/src/frontend/calculator -I/usr/local/lib/QtPrintSupport.framework/Headers -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/lib ../calculator/qcustomplot.h -o moc_qcustomplot.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_grafic.h
+compiler_uic_make_all: ui_grafic.h ui_mainwindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_grafic.h
+	-$(DEL_FILE) ui_grafic.h ui_mainwindow.h
 ui_grafic.h: ../calculator/grafic.ui \
-		/usr/local/share/qt/libexec/uic
+		/usr/local/share/qt/libexec/uic \
+		../calculator/qcustomplot.h \
+		/usr/local/lib/QtCore.framework/Headers/qmath.h \
+		/usr/local/lib/QtCore.framework/Headers/qnumeric.h \
+		/usr/local/lib/QtCore.framework/Headers/QtNumeric
 	/usr/local/share/qt/libexec/uic ../calculator/grafic.ui -o ui_grafic.h
+
+ui_mainwindow.h: ../calculator/mainwindow.ui \
+		/usr/local/share/qt/libexec/uic
+	/usr/local/share/qt/libexec/uic ../calculator/mainwindow.ui -o ui_mainwindow.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -1004,11 +1031,13 @@ grafic.o: ../calculator/grafic.cpp ../calculator/grafic.h \
 		/usr/local/lib/QtWidgets.framework/Headers/qdialog.h \
 		/usr/local/lib/QtCore.framework/Headers/QVector \
 		/usr/local/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/lib/QtCore.framework/Headers/qtimer.h \
+		../../backend/s21_smart_calc.h \
 		ui_grafic.h \
 		../calculator/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QMainWindow \
-		/usr/local/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../../backend/s21_smart_calc.h
+		/usr/local/lib/QtWidgets.framework/Headers/qmainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grafic.o ../calculator/grafic.cpp
 
 main.o: ../calculator/main.cpp ../calculator/mainwindow.h \
@@ -1019,6 +1048,8 @@ main.o: ../calculator/main.cpp ../calculator/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/qdialog.h \
 		/usr/local/lib/QtCore.framework/Headers/QVector \
 		/usr/local/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/lib/QtCore.framework/Headers/qtimer.h \
 		../../backend/s21_smart_calc.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QApplication \
 		/usr/local/lib/QtWidgets.framework/Headers/qapplication.h
@@ -1032,15 +1063,26 @@ mainwindow.o: ../calculator/mainwindow.cpp ../calculator/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/qdialog.h \
 		/usr/local/lib/QtCore.framework/Headers/QVector \
 		/usr/local/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/lib/QtCore.framework/Headers/qtimer.h \
 		../../backend/s21_smart_calc.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../calculator/mainwindow.cpp
+
+qcustomplot.o: ../calculator/qcustomplot.cpp ../calculator/qcustomplot.h \
+		/usr/local/lib/QtCore.framework/Headers/qmath.h \
+		/usr/local/lib/QtCore.framework/Headers/qnumeric.h \
+		/usr/local/lib/QtCore.framework/Headers/QtNumeric
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qcustomplot.o ../calculator/qcustomplot.cpp
 
 moc_grafic.o: moc_grafic.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_grafic.o moc_grafic.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_qcustomplot.o: moc_qcustomplot.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qcustomplot.o moc_qcustomplot.cpp
 
 ####### Install
 

@@ -3,6 +3,11 @@
 
 #include <QDialog>
 #include <QVector>
+#include <QTimer>
+
+extern "C" {
+#include "../../backend/s21_smart_calc.h"
+}
 
 namespace Ui {
 class grafic;
@@ -17,10 +22,17 @@ public:
     ~grafic();
 
 private slots:
+    void TimerSlot();
+    int CalcYxis();
 
 private:
     Ui::grafic *ui;
+    double xBegin, xEnd, h, X;
+    int N;
 
+    QVector<double> x, y;
+    QTimer *timer;
+    int time;
 };
 
 #endif // GRAFIC_H

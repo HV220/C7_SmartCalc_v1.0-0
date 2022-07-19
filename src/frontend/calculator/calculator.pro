@@ -14,15 +14,18 @@ SOURCES += \
     ../../backend/support_func.c \
     grafic.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     ../../backend/s21_smart_calc.h \
     grafic.h \
-    mainwindow.h
+    mainwindow.h \
+    qcustomplot.h
 
 FORMS += \
-    grafic.ui
+    grafic.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

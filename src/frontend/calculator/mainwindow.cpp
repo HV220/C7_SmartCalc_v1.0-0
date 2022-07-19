@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
      connect(ui->Button_x,SIGNAL(clicked()), this, SLOT(math_operations()));
      connect(ui->Button_res,SIGNAL(clicked()), this, SLOT(on_Button_res_clicked()));
      connect(ui->Button_AC,SIGNAL(clicked()), this, SLOT(on_Button_AC_clicked()));
+     ui->Button_res->setCheckable(true);
 
 }
 
@@ -80,16 +81,21 @@ void MainWindow::on_Button_AC_clicked()
 
 void MainWindow::on_Button_res_clicked()
 {
-    QByteArray test = ui->text_view->text().toLocal8Bit();
-    const char *str = test.data();
-    lexems_t *buf = NULL;
-    lexems_t *res_str  = parcer(str);
-    transpose_struct(&buf, res_str);
-    res_str = OPN(buf);
-    if(!res_str) { ui->text_view->setText("INVALID ERROR");
-    } else {
-        ui->text_view->setText(QString::number(res_str->value, 'g', 15));
-    }
+        if(ui->Button_res->isChecked()) {
+            QByteArray test = ui->text_view->text().toLocal8Bit();
+                const char *str = test.data();
+                lexems_t *buf = NULL;
+                lexems_t *res_str  = parcer(str);
+                transpose_struct(&buf, res_str);
+                res_str = OPN(buf);
+                if(!res_str) { ui->text_view->setText("INVALID ERROR");
+                } else {
+                    ui->text_view->setText(QString::number(res_str->value, 'g', 15));
+                }
+        QPushButton *button = (QPushButton *)sender();
+
+        button->setChecked(false);
+        }
 }
 
 void MainWindow::math_operations()

@@ -262,7 +262,7 @@ char* check_number(const char* str, int* i, int* error) {
     *error = 0;
     int j = *i;
     int calc = 0;
-    char* res = (char*)calloc(calc, (sizeof(char)));
+    char* res = (char*)calloc(calc + 1, (sizeof(char)));
     if (!res) return NULL;
     for (; str[j] && str[j] != '\n' && !(*error); j++, calc++) {
         if (!is_num(str + j)) {

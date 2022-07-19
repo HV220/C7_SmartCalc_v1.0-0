@@ -37,7 +37,14 @@ lexems_t* OPN(lexems_t* sourse) {
         }
         sourse = sourse->next;
     }
+    if (error) {
+        while (nums) clear_stack(&nums);
+        while (signs) clear_stack(&signs);
+        return NULL;
+    }
+
     error = last_change_stack_OPN(&signs, &nums);
+
     if (error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
