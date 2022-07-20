@@ -8,34 +8,7 @@ grafic::grafic(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    h = 0.5;
-    xBegin = 0;
-    xEnd = 10;
 
-    ui->widget->xAxis->setRange(0,10);
-    ui->widget->yAxis->setRange(0, 10);
-
-    N = (xEnd - xBegin) / h + 2;
-
-    for(X = xBegin; X <= xEnd; X += h)
-    {
-        x.push_back(X);
-        y.push_back(X+X);
-    }
-
-
-    ui->widget->addGraph();
-    ui->widget->graph(0)->addData(x,y);
-    ui->widget->replot();
-
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(TimerSlot()));
-    ui->widget->clearGraphs();
-    time = 0;
-    timer->start(20);
-    X = xBegin;
-    x.clear();
-    y.clear();
 }
 
 grafic::~grafic()
@@ -43,30 +16,45 @@ grafic::~grafic()
     delete ui;
 }
 
-void grafic::TimerSlot() {
-if(time <= 20 * N)
-{
-    if(X <= xEnd)
+void grafic::MakeGraf(QString str_test) {
+    QString str_buf = str_test;
+    h = 0.1;
+    xBegin = 0;
+    xEnd = 10;
+    double yaxis_minus = 0;
+    double yaxis_plus = 0;
+    for(X = xBegin; X <= xEnd; X += h)
     {
-        x.push_back(X);
-        y.push_back(X*X);
-        X += h;
+        str_buf.replace("x", QString::number(X));
+        QByteArray test = str_buf.toLocal8Bit();
+        const char *str = test.data();
+        lexems_t *buf = NULL;
+        lexems_t *res_str  = parcer(str);
+        transpose_struct(&buf, res_str);
+        res_str = OPN(buf);
+        if(!res_str)
+        {
+            EXIT_FAILURE;
+        }
+        else
+        {
+            x.push_back(X);
+            y.push_back(res_str->value);
+            if (res_str->value < 0) {
+                if(res_str->value < yaxis_minus)
+                yaxis_minus = res_str->value;
+            } else {
+                if(res_str->value > yaxis_plus)
+                yaxis_plus = res_str->value;
+            }
+        }
+        str_buf = str_test;
     }
-    time += 20;
-} else
-{
-    time = 0;
-    timer->stop();
-}
 
-ui->widget->addGraph();
-ui->widget->graph(0)->addData(x,y);
-ui->widget->replot();
-}
+    ui->widget->xAxis->setRange(0,10);
+    ui->widget->yAxis->setRange(round(yaxis_minus), round(yaxis_plus));
 
-int grafic::CalcYxis()
-{
-    for (int i = 0; i < 10; i++) {
-
-    }
+    ui->widget->addGraph();
+    ui->widget->graph(0)->addData(x,y);
+    ui->widget->replot();
 }

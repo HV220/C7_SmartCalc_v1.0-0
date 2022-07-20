@@ -21,18 +21,14 @@ public:
     explicit grafic(QWidget *parent = nullptr);
     ~grafic();
 
-private slots:
-    void TimerSlot();
-    int CalcYxis();
+public slots:
+    void MakeGraf(QString str);
 
 private:
     Ui::grafic *ui;
     double xBegin, xEnd, h, X;
-    int N;
 
     QVector<double> x, y;
-    QTimer *timer;
-    int time;
 };
 
 #endif // GRAFIC_H

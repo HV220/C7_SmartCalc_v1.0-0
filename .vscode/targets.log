@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Tue Jul 19 16:07:27 2022
+# Make data base, printed on Wed Jul 20 22:44:36 2022
 
 # Variables
 
@@ -36,19 +36,17 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 VSCODE_CWD = /
 # environment
-PATH = /Users/aladales/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/munki:/Library/Apple/usr/bin
+PATH = /Users/aladales/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/munki:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 LIBRARY_PATH = /usr/local/Cellar/check/0.15.2/lib:/usr/local/lib
 # environment
-LaunchInstanceID = 0C9947E9-FFB5-4799-9325-537B9D53DC85
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.Wess5IU55w/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.1TKNuqpTGb/Listeners
 # environment
 CPLUS_INCLUDE_PATH = /usr/local/include/
 # automatic
@@ -66,11 +64,11 @@ HOME = /Users/aladales
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/aladales/Library/Application Support/Code/CachedData/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
+VSCODE_CODE_CACHE_PATH = /Users/aladales/Library/Application Support/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 LOGNAME = aladales
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 ZSH = /Users/aladales/.oh-my-zsh
 # environment
@@ -106,7 +104,7 @@ TMPDIR = /var/folders/zz/zyxvpxvq6csfxvn_n003vx0w00yz87/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/aladales/Library/Application Support/Code/1.69.1-main.sock
+VSCODE_IPC_HOOK = /Users/aladales/Library/Application Support/Code/1.69.2-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -116,7 +114,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.572809.572815
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.653073.653079
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -133,8 +131,6 @@ MAKEFILES :=
 PAGER = less
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 18be4
 # automatic
 ^F = $(notdir $^)
 # default
@@ -148,9 +144,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 64768
+VSCODE_PID = 82080
 # variable set hash-table stats:
-# Load=69/1024=7%, Rehash=0, Collisions=2/90=2%
+# Load=67/1024=7%, Rehash=0, Collisions=2/88=2%
 
 # Pattern-specific Variable Values
 
@@ -232,7 +228,7 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Tue Jul 19 16:07:27 2022
+# Finished Make data base on Wed Jul 20 22:44:36 2022
 
  
 make: *** No rule to make target `all'.  Stop.

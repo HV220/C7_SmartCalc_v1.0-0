@@ -81,19 +81,22 @@ void MainWindow::on_Button_AC_clicked()
 
 void MainWindow::on_Button_res_clicked()
 {
+     QPushButton *button = (QPushButton *)sender();
         if(ui->Button_res->isChecked()) {
-            QByteArray test = ui->text_view->text().toLocal8Bit();
-                const char *str = test.data();
-                lexems_t *buf = NULL;
-                lexems_t *res_str  = parcer(str);
-                transpose_struct(&buf, res_str);
-                res_str = OPN(buf);
-                if(!res_str) { ui->text_view->setText("INVALID ERROR");
-                } else {
-                    ui->text_view->setText(QString::number(res_str->value, 'g', 15));
-                }
-        QPushButton *button = (QPushButton *)sender();
-
+            if(ui->text_view->text().contains("x")) {
+            graf = new grafic(this);
+            graf->show();
+            graf->MakeGraf(ui->text_view->text());
+            } else {
+                    QByteArray test = ui->text_view->text().toLocal8Bit();
+                    const char *str = test.data();
+                    lexems_t *buf = NULL;
+                    lexems_t *res_str  = parcer(str);
+                    transpose_struct(&buf, res_str);
+                    res_str = OPN(buf);
+                    if(!res_str)ui->text_view->setText("INVALID ERROR");
+                    else ui->text_view->setText(QString::number(res_str->value, 'g', 15));
+            }
         button->setChecked(false);
         }
 }
@@ -132,7 +135,5 @@ void MainWindow::math_operations()
 
 void MainWindow::on_Button_unar_clicked()
 {
-    grafic graf;
-    graf.setModal(true);
-    graf.exec();
+
 }

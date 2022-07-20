@@ -23,6 +23,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    grafic *graf;
 
 private slots:
    void digits_numbers();
