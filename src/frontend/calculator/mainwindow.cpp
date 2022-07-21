@@ -93,9 +93,10 @@ void MainWindow::on_Button_res_clicked()
                     lexems_t *buf = NULL;
                     lexems_t *res_str  = parcer(str);
                     transpose_struct(&buf, res_str);
-                    res_str = OPN(buf);
+                    double res = OPN(buf);
                     if(!res_str)ui->text_view->setText("INVALID ERROR");
-                    else ui->text_view->setText(QString::number(res_str->value, 'g', 15));
+                    else ui->text_view->setText(QString::number(res, 'g', 15));
+                    if (res_str) while (res_str) clear_stack(&res_str);
             }
         button->setChecked(false);
         }

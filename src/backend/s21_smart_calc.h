@@ -1,5 +1,5 @@
-#ifndef SRC_S21_SMART_CALC_H_
-#define SRC_S21_SMART_CALC_H_
+#ifndef SRC_BACKEND_S21_SMART_CALC_H_
+#define SRC_BACKEND_S21_SMART_CALC_H_
 
 #include <math.h>
 #include <stdio.h>
@@ -55,11 +55,11 @@ void push_sign(lexems_t** stack, int sign);
 
 // OPN
 
-lexems_t* OPN(lexems_t* sourse);
+double OPN(lexems_t* sourse);
 double calc_values_OPN(double a, double b, int sign);
 double calc_func_OPN(lexems_t* signs, lexems_t* nums);
 int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums);
 int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums);
 int last_change_stack_OPN(lexems_t** signs, lexems_t** nums);
-
-#endif  //  SRC_S21_SMART_CALC_H_
+void delete_Lexem_t(lexems_t **head);
+#endif  //  SRC_BACKEND_S21_SMART_CALC_H_

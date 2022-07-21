@@ -31,21 +31,21 @@ void grafic::MakeGraf(QString str_test) {
         lexems_t *buf = NULL;
         lexems_t *res_str  = parcer(str);
         transpose_struct(&buf, res_str);
-        res_str = OPN(buf);
-        if(!res_str)
+        double res = OPN(buf);
+        if(!res)
         {
             EXIT_FAILURE;
         }
         else
         {
             x.push_back(X);
-            y.push_back(res_str->value);
-            if (res_str->value < 0) {
-                if(res_str->value < yaxis_minus)
-                yaxis_minus = res_str->value;
+            y.push_back(res);
+            if (res < 0) {
+                if(res < yaxis_minus)
+                yaxis_minus = res;
             } else {
-                if(res_str->value > yaxis_plus)
-                yaxis_plus = res_str->value;
+                if(res > yaxis_plus)
+                yaxis_plus = res;
             }
         }
         str_buf = str_test;

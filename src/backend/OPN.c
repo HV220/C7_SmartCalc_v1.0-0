@@ -1,10 +1,11 @@
 #include "s21_smart_calc.h"
 
-lexems_t* OPN(lexems_t* sourse) {
+double OPN(lexems_t* sourse) {
     int error = 0;
+    if (!sourse) return EXIT_FAILURE;
     lexems_t* nums = NULL;
     lexems_t* signs = NULL;
-    if (!sourse) return NULL;
+
     while (sourse) {
         if (sourse->type == 18) {
             push(&nums, sourse->value, sourse->type, sourse->priority);
@@ -37,20 +38,21 @@ lexems_t* OPN(lexems_t* sourse) {
         }
         sourse = sourse->next;
     }
+
     if (error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
-        return NULL;
+        return EXIT_FAILURE;
     }
-
     error = last_change_stack_OPN(&signs, &nums);
-
     if (error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
-        return NULL;
+        return EXIT_FAILURE;
     } else {
+        double res = nums->value;
         while (signs) clear_stack(&signs);
-        return nums;
+        while (nums) clear_stack(&nums);
+        return res;
     }
 }

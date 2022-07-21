@@ -73,7 +73,6 @@ int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums) {
         push(nums, res, 18, 5);
         clear_stack(signs);
     } else {
-        if ((*nums) == NULL) return 1;
         double b = (*nums)->value;
         clear_stack(nums);
         if ((*nums) == NULL) return 1;
@@ -276,15 +275,21 @@ char* check_number(const char* str, int* i, int* error) {
             }
         }
         res[calc] = str[j];
-        res = (char*)realloc(res, (calc + 1) * (sizeof(char)));
-    if(!res) break;
+        char* tmp = (char*)realloc(res, (calc + 1) * (sizeof(char)));
+        if (tmp)
+            res = tmp;
+        else
+            break;
     }
-    if(res) {
-        if(*error) {
-            free(res); return NULL; } else {
-        res[calc] = '\0';
-        *i = j;
-        return res; }
+    if (res) {
+        if (*error) {
+            free(res);
+            return NULL;
+        } else {
+            res[calc] = '\0';
+            *i = j;
+            return res;
+        }
     } else {
         *error = 5;
         return NULL;
@@ -316,4 +321,12 @@ void push_sign(lexems_t** stack, int sign) {
             push(stack, 0, sign, 3);
             break;
     }
+}
+
+void delete_Lexem_t(lexems_t** head) {
+    while ((*head)->next) {
+        clear_stack(head);
+        *head = (*head)->next;
+    }
+    free(*head);
 }
