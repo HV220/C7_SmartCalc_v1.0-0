@@ -1,8 +1,0 @@
-{
-    "makefile.extensionOutputFolder": "./.vscode",
-    "files.associations": {
-        "math.h": "c",
-        "s21_smart_calc.h": "c",
-        "stdlib.h": "c",
-    }
-}
