@@ -42,7 +42,6 @@ void transpose_struct(lexems_t** dev, lexems_t* sourse);
 lexems_t* pop(lexems_t** head);
 int peek(const lexems_t* head);
 int check_sign(char sign);
-void print_stack(lexems_t* head);
 void clear_stack(lexems_t** head);
 char* check_number(const char* str, int* i, int* error);
 int is_num(const char* str);
@@ -55,11 +54,10 @@ void push_sign(lexems_t** stack, int sign);
 
 // OPN
 
-double OPN(lexems_t* sourse);
+double OPN(lexems_t* sourse, int* error);
 double calc_values_OPN(double a, double b, int sign);
 double calc_func_OPN(lexems_t* signs, lexems_t* nums);
 int change_stack_operators_OPN(lexems_t** signs, lexems_t** nums);
 int change_stack_parentheses_OPN(lexems_t** signs, lexems_t** nums);
 int last_change_stack_OPN(lexems_t** signs, lexems_t** nums);
-void delete_Lexem_t(lexems_t **head);
 #endif  //  SRC_BACKEND_S21_SMART_CALC_H_

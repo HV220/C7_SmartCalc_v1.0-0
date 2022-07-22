@@ -28,11 +28,12 @@ void grafic::MakeGraf(QString str_test) {
         str_buf.replace("x", QString::number(X));
         QByteArray test = str_buf.toLocal8Bit();
         const char *str = test.data();
+        int error = 0;
         lexems_t *buf = NULL;
         lexems_t *res_str  = parcer(str);
         transpose_struct(&buf, res_str);
-        double res = OPN(buf);
-        if(!res)
+        double res = OPN(buf, &error);
+        if(error)
         {
             EXIT_FAILURE;
         }
@@ -44,6 +45,8 @@ void grafic::MakeGraf(QString str_test) {
                 if(res < yaxis_minus)
                 yaxis_minus = res;
             } else {
+                if(yaxis_minus > 0)
+                yaxis_minus = res;
                 if(res > yaxis_plus)
                 yaxis_plus = res;
             }

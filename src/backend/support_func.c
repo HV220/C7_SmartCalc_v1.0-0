@@ -202,30 +202,6 @@ void change_position_func(int check, int* i) {
 
 int is_num(const char* str) { return (('0' <= *str) && (*str <= '9')) ? 1 : 0; }
 
-void print_stack(lexems_t* head) {
-    if (!head) return;
-    lexems_t* buf_priority = head;
-    lexems_t* buf_type = head;
-    printf("value-> ");
-    while (head) {
-        printf("%lf ", head->value);
-        head = head->next;
-    }
-    printf("\n");
-    printf("priority-> ");
-    while (buf_priority) {
-        printf("%d ", buf_priority->priority);
-        buf_priority = buf_priority->next;
-    }
-    printf("\n");
-    printf("type-> ");
-    while (buf_type) {
-        printf("%d ", buf_type->type);
-        buf_type = buf_type->next;
-    }
-    printf("\n");
-}
-
 void clear_stack(lexems_t** head) {
     if (*head == NULL) {
         return;
@@ -323,10 +299,3 @@ void push_sign(lexems_t** stack, int sign) {
     }
 }
 
-void delete_Lexem_t(lexems_t** head) {
-    while ((*head)->next) {
-        clear_stack(head);
-        *head = (*head)->next;
-    }
-    free(*head);
-}

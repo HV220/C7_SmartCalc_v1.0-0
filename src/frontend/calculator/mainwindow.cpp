@@ -90,11 +90,12 @@ void MainWindow::on_Button_res_clicked()
             } else {
                     QByteArray test = ui->text_view->text().toLocal8Bit();
                     const char *str = test.data();
+                    int error = 0;
                     lexems_t *buf = NULL;
                     lexems_t *res_str  = parcer(str);
                     transpose_struct(&buf, res_str);
-                    double res = OPN(buf);
-                    if(!res_str)ui->text_view->setText("INVALID ERROR");
+                    double res = OPN(buf, &error);
+                    if(!res_str || error)ui->text_view->setText("INVALID ERROR");
                     else ui->text_view->setText(QString::number(res, 'g', 15));
                     if (res_str) while (res_str) clear_stack(&res_str);
             }

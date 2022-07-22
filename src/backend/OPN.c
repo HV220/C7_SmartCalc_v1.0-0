@@ -1,7 +1,6 @@
 #include "s21_smart_calc.h"
 
-double OPN(lexems_t* sourse) {
-    int error = 0;
+double OPN(lexems_t* sourse, int *error) {
     if (!sourse) return EXIT_FAILURE;
     lexems_t* nums = NULL;
     lexems_t* signs = NULL;
@@ -16,7 +15,7 @@ double OPN(lexems_t* sourse) {
                 if (sourse->priority <= signs->priority &&
                     signs->priority != 6) {
                     if (change_stack_operators_OPN(&signs, &nums)) {
-                        error = 1;
+                        *error = 1;
                         break;
                     }
                 }
@@ -27,7 +26,7 @@ double OPN(lexems_t* sourse) {
                     }
                     if (sourse->type == 16) {
                         if (change_stack_parentheses_OPN(&signs, &nums)) {
-                            error = 5;
+                            *error = 5;
                             break;
                         }
                     }
@@ -39,13 +38,13 @@ double OPN(lexems_t* sourse) {
         sourse = sourse->next;
     }
 
-    if (error) {
+    if (*error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
         return EXIT_FAILURE;
     }
-    error = last_change_stack_OPN(&signs, &nums);
-    if (error) {
+    *error = last_change_stack_OPN(&signs, &nums);
+    if (*error) {
         while (nums) clear_stack(&nums);
         while (signs) clear_stack(&signs);
         return EXIT_FAILURE;
